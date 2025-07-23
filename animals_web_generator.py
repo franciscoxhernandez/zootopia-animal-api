@@ -1,20 +1,6 @@
-import requests
+from data_fetcher import get_animal_data
 
-def get_animal_data(animal_name):
-    """This function gets animal data from API Ninjas"""
-    api_url = f'https://api.api-ninjas.com/v1/animals?name={animal_name}'
-    response = requests.get(api_url, headers={'X-Api-Key': 'gbhG5zXlusHL4o5dgJ7RxQ==OYecyDBtpCoL1PCG'})
-
-    if response.status_code != 200:
-        print(f"Error fetching data: {response.status_code}")
-        return []
-
-    data = response.json()
-    if not data:
-        print("No animal found.")
-    return data
-
-def serialize_animals(animals_data):
+def generate_html(animals_data):
     """This functions creates the html content"""
     output = ""
     for animal in animals_data:
@@ -58,7 +44,7 @@ def main():
         message = f'<h2>The animal "{animal_name}" does not exist.</h2>'
         final_html = template.replace("__REPLACE_ANIMALS_INFO__", message)
     else:
-        html_content = serialize_animals(animals_data)
+        html_content = generate_html(animals_data)
         final_html = template.replace("__REPLACE_ANIMALS_INFO__", html_content)
 
     # Write the final result
